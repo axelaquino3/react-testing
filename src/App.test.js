@@ -15,7 +15,11 @@ test('App should render', () => {
 
 test('Button should render', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App/>);
+
+  const button = screen.getByText(/Current theme: light/i);
+
+  expect(button).toBeInTheDocument();
 });
 
 /**
@@ -24,7 +28,11 @@ test('Button should render', () => {
  */
 test('theme button should update button text', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App/>);
+
+  const button = screen.getByText(/Current theme: light/i);
+  fireEvent.click(button)
+  expect(button.textContent).toBe('Current theme: dark');
 });
 
 // BONUS
@@ -32,7 +40,12 @@ test('theme button should update button text', () => {
 // e.g.: expect(element).toHaveStyle('color: #FFF');
 test('theme button should toggle styles', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />)
+  const button = screen.getByText("Current theme: light")
+  const { body } = document;
+
+  fireEvent.click(button)
+  expect(body).toHaveStyle('color: rgb(255, 255, 255)');
 });
 
 /**
@@ -46,8 +59,25 @@ test('theme button should toggle styles', () => {
  */
 test('hidden button should toggle hidden content', () => {
   // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App />)
+  const button = screen.getByText("Show hidden content")
+  fireEvent.click(button);
+  let hiddenTxt = screen.getByText("this content is hidden by default")
+
+  expect(hiddenTxt).toBeInTheDocument();
+
+  fireEvent.click(button)
+  hiddenTxt = screen.queryByText("this content is hidden by default")
+  expect(hiddenTxt).not.toBeInTheDocument()
 });
+
+test('paragraph element contains text', () => {
+  render(<App />)
+
+  const pElement = screen.getByText("Click the button to toggle the theme")
+
+  expect(pElement).toBeInTheDocument();
+})
 
 
 /**
